@@ -1,0 +1,7 @@
+
+[Desktop Entry]
+Type=Application
+Name=Puppy
+Icon=/opt/puppy-file-server/puppy.png
+Exec=invoker --single-instance --type=e /usr/bin/python /opt/puppy-file-server/puppy-file-server.py
+Name[en_US]=Puppy
