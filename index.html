@@ -21,7 +21,13 @@
 			$().ready(function() {
 				$('#elfinder').elfinder({
 					url : '/cgi-bin/connector.py',  // connector URL (REQUIRED)
-					transport : new elFinderSupportVer1()
+					transport : new elFinderSupportVer1(),
+                                        commands : [
+	'open', 'reload', 'home', 'up', 'back', 'forward', 'getfile', 'quicklook',
+        'rm', 'duplicate', 'rename', 'mkdir', 'mkfile', 'upload', 'copy',
+	'cut', 'paste', 'edit', 'info', 'view', 'help',
+	'resize', 'sort'
+]
 				});
 			});
 		</script>
