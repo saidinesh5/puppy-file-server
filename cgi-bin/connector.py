@@ -16,7 +16,7 @@ opts = {
 	# 'root': '/path/to/files', # full path to your files
 	# 'URL': 'http://mydomain.tld/path/to/files' # can be absolute or relative
 	'root': '/home/user/MyDocs',
-	'URL': '.',
+	#'URL': '../',
 	## other options
 	'debug': True,
 	'fileURL': False,  # download files using connector, no direct urls to files
