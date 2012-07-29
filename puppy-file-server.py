@@ -12,6 +12,7 @@ from CGIHTTPServer import CGIHTTPRequestHandler
 
 from PySide.QtCore import *
 from PySide.QtGui import QApplication
+from PySide.QtNetwork import QNetworkConfigurationManager
 from PySide.QtDeclarative import QDeclarativeView
 
 import os
@@ -108,9 +109,23 @@ class ElServer(QObject):
     self._port = 8000
     self._alive = False
 
+    #For starting and stopping the server based on network connectiviy changes
+    self._nm = QNetworkConfigurationManager()
+    self._nm.onlineStateChanged.connect(self._onlineStateChanged)
+
+  def _onlineStateChanged(self, isOnline):
+    if isOnline:
+      #Restart the server to get the new IPs, if any
+      self.stop()
+      self.start()
+    else:
+      self.stop()
+
   @Slot()
   def start(self):
-    if self._httpd is None:
+    # Allow only 1 instance of the server per object.
+    # Also create the server only when we are connected.
+    if self._httpd is None and self._nm.isOnline():
       self._thread = threading.Thread(target=self._thread_proc)
       self._thread.setDaemon(True)
       self._thread.start()
@@ -124,21 +139,27 @@ class ElServer(QObject):
         break
       except:
         self._port += 1
-    self._alive = True
-    self.statusChanged.emit()
+    self._setAlive(True)
     self._httpd.serve_forever()
     self._thread = None
 
   def _isAlive(self):
     return self._alive
+
+  def _setAlive(self,value):
+    if value != self._alive:
+      self._alive = value
+      self.statusChanged.emit()
+
   statusChanged = Signal()
-  isAlive = Property(bool, _isAlive, notify = statusChanged)
+  isAlive = Property(bool, _isAlive, _setAlive, notify = statusChanged)
 
   @Slot()
   def stop(self):
     if self._httpd is not None:
       self._httpd.shutdown()
       self._httpd = None
+      self._setAlive(False)
       print "Stopping Server..."
 
   def get_ips(self):
@@ -166,15 +187,17 @@ class ElServer(QObject):
     return ElServer.CONNECTIONS.status(address)
 
 def main():
+  app = QApplication(sys.argv)
+
   server = ElServer()
   server.start()
 
-  app = QApplication(sys.argv)
   view = QDeclarativeView()
   rootContext = view.rootContext()
   rootContext.setContextProperty('server', server)
   view.setSource('main.qml')
   view.showFullScreen()
+
   app.exec_()
 
   server.stop()

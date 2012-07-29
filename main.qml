@@ -26,7 +26,7 @@ PageStackWindow {
         horizontalCenter : parent.horizontalCenter
         margins: 20
       }
-      text: server.isAlive? server.statusString(): "<center>Please connect to a network <br/>and restart the Application.</center>"
+      text: server.isAlive? server.statusString(): "<center>Please connect to a network <br/>to use the Application.</center>"
       font.pointSize: 20
      }
 
