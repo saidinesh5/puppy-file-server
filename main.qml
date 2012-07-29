@@ -70,6 +70,21 @@ PageStackWindow {
           }
         }
 
+        footer: Rectangle {
+          id: listFooter
+          width: parent.width
+          height: 60
+          color: "black"
+          radius: 10
+          visible: (connectionsView.count == 0)
+          Text {
+            color: "lightgrey"
+            text: "No Connections Yet"
+            font.pointSize: 20
+            anchors.centerIn: parent
+          }
+        }
+
         delegate: Rectangle {
           width: titleBar.width
           anchors.margins: 10
