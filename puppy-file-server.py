@@ -155,7 +155,7 @@ class ElServer(QObject):
     ips = self.get_ips()
     if ips is None:
       return ""
-    return u'<center>Visit:<br>' + u'<br>or '.join(u'http://%s:%d/' % (ip, self._port) for ip in ips) + '<br/>to Access your files.</center>'
+    return u'<center>Visit:<br>' + u'<br>or '.join(u'http://%s:%d/' % (ip, self._port) for ip in ips) + '<br/>on your computer, to access your files.</center>'
 
   @Slot(result=QObject)
   def connections(self):
