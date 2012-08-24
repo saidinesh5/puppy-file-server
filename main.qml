@@ -39,7 +39,7 @@ PageStackWindow {
       anchors.top: parent.top
       width: parent.width
       height: 100
-      color: server.isAlive? "lightgreen":"orange"
+      color: server.isAlive? "green":"orange"
       Text {
         anchors.centerIn : parent
         text: server.isAlive? "Server is ready to use!":"You are Offline!"
